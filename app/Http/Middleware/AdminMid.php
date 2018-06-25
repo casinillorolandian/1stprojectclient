@@ -16,7 +16,7 @@ class AdminMid
      */
     public function handle($request, Closure $next)
     {
-         if (Auth::user()->role == 'admin') {
+         if (Auth::guard('admin')->check()) {
             return $next($request);
         }
 

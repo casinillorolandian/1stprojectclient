@@ -69,12 +69,12 @@ class MessagesController extends Controller
         $file1 = $firstimage;
         $namefile1 = $file1->getClientOriginalName();
         $finalfilename1 = time(). '1st'. $namefile1 ;
-        $destinationPath = 'uploads';
+        $destinationPath = 'uploads/messageImage';
         $file1->move($destinationPath,$finalfilename1);
 
         // 1stimage going to the database
         $imageName1 = $firstimage->getClientOriginalName();
-        $imagedata1 = 'uploads/'. time(). '1st' .$imageName1 ;
+        $imagedata1 = 'uploads/messageImage/'. time(). '1st' .$imageName1 ;
         } else {
           $imagedata1 = '0';
         }
@@ -84,12 +84,12 @@ class MessagesController extends Controller
         $file2 = $secondimage;
         $namefile2 = $file2->getClientOriginalName();
         $finalfilename2 = time() . '2nditem'. $namefile2 ;
-        $destinationPath = 'uploads/item';
+        $destinationPath = 'uploads/messageImage';
         $file2->move($destinationPath,$finalfilename2);
 
 
         $imageName2 = $secondimage->getClientOriginalName();
-        $imagedata2 = 'uploads/item/'. time() . '2nditem' .$imageName2 ;
+        $imagedata2 = 'uploads/messageImage/'. time() . '2nditem' .$imageName2 ;
         } else {
           $imagedata2 = '0';
         }
@@ -99,12 +99,12 @@ class MessagesController extends Controller
         $file3 = $thirdimage;
         $namefile3 = $file3->getClientOriginalName();
         $finalfilename3 = time() . '3rditem' . $namefile3 ;
-        $destinationPath = 'uploads/item';
+        $destinationPath = 'uploads/messageImage';
         $file3->move($destinationPath,$finalfilename3);
 
 
         $imageName3 = $thirdimage->getClientOriginalName();
-        $imagedata3 = 'uploads/item/'. time() . '3rditem' .$imageName3 ;
+        $imagedata3 = 'uploads/messageImage/'. time() . '3rditem' .$imageName3 ;
         } else {
           $imagedata3 = '0';
         }

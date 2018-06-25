@@ -35,19 +35,63 @@
               <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+
             </ol>
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
-                <img class="d-block img-fluid" src="{{ asset('img/fall.jpeg') }}" alt="First slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1a.jpg') }}" alt="First slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <a href='{{url("watches")}}'> 
+                  <div class="imageration lobofont">Watches/Jewelries</div>
+                  </a>
+                </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="{{ asset('img/winter.jpg') }}" alt="Second slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1b.jpeg') }}" alt="Second slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Accessories"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Accessories</div>
+                  </a>
+                </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="{{ asset('img/spring.jpg') }}" alt="Third slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1c.jpeg') }}" alt="Third slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Bags"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Bags</div>
+                  </a>
+                </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="{{ asset('img/summer.jpeg') }}" alt="Third slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1e.jpeg') }}" alt="Fourth slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Luggages"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Luggages</div>
+                  </a>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="d-block img-fluid" src="{{ asset('/css/1d.jpeg') }}" alt="Fourth slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Footwears"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Footwears</div>
+                  </a>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="d-block img-fluid" src="{{ asset('/css/1f.jpg') }}" alt="Fourth slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Wallets"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Wallets</div>
+                  </a>
+                </div>
               </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -60,6 +104,8 @@
             </a>
           </div>
         </div>
+
+        
         <div class="col-lg-10 offset-md-1">
           @if(!empty(Session::get('deleted')))
 
@@ -75,14 +121,14 @@
                 <a data-toggle="modal" data-target="#myModal{{$item->id}}"><img style="height: 350px;" class="card-img-top" src="{{ $item-> itemimage1 }}" alt=""></a>
                 <div class="card-body" style="height: 60px;"> 
                   <h4 class="card-title">
-                    <a href="#">{{ $item-> itemname }}</a>
+                    <a href="#">{{ $item-> name }}</a>
                   </h4>
                 </div>
                 <div class="card-footer">
-                  <small class="text-muted"><?php echo $item->category; ?></small>
+                  <small class="text-muted"> {{$item-> brand -> brandname}} </small>
                 </div>
               
-	            @if (Auth::user()->role == 'admin')
+	            @if (Auth::guard('admin')->check())
 	            <a data-toggle="modal" data-target="#deleteModal{{$item->id}}" href='{{url("catalogue/$item->id/delete")}}' class="btn btn-danger btn-md" role="button">Delete</a>
 	            <a href='{{url("catalogue/update/$item->id/")}}' class="btn btn-info btn-md" role="button">Update</a>
 	            @endif
@@ -97,41 +143,38 @@
 			      <!-- Modal content-->
 			      <div class="modal-content">
 			        <div class="modal-header">
-			        @if (Auth::user()->role == NULL)
+			        @guest
 			        @elseif (Auth::user()->role == 'user')
 			        <a href='{{url("messages/reserve/$item->id/")}}' class="btn btn-info btn-md" role="button">Reserve</a>
 			        @else
 			        <a href='{{url("catalogue/update/$item->id/")}}' class="btn btn-info btn-md" role="button">Update</a>
-            		@endif
+            	@endguest
 			          
 			        </div>
 			        <div class="modal-body row">
 			        	<div class="col-lg-4 ">
-			        		<img style="height: 350px;" src="{{ $item-> itemimage1 }}" alt="">
+			        		<img style="width: 300px; height: 350px;" src="{{ $item-> itemimage1 }}" alt="">
 
 			        		@if($item-> itemimage2 != '0')
 			        		<br>
-			        		<img style="height: 350px;" src="{{ $item-> itemimage2 }}" alt="">
+			        		<img style="width: 300px; height: 350px;" src="{{ $item-> itemimage2 }}" alt="">
 			        		@endif
 
 			        		@if($item-> itemimage3 != '0')
 			        		<br>
-			        		<img style="height: 350px;" src="{{ $item-> itemimage3 }}" alt="">
+			        		<img style="width: 300px; height: 350px;" src="{{ $item-> itemimage3 }}" alt="">
 			        		@endif
 			        	</div>
 			        	<div class="col-lg-7 offset-lg-1">
-			        		<h1>{{ $item->itemname }}</h1>
+			        		<h2>For as low as: &#8369;{{ $item->price }}</h1>
 			        		<hr>
-			        		<h3>{{ $item->category }}</h3>
-			        		<hr>
-			        		<h4>{{ $item->itemname }}</h4>
-			        		<hr>
-			        		<?php echo $item->itemdescription; ?>
-			        		<hr>
-			        		@if($item-> discount != '0')
-			        		<br>
-			        		<h4 style="text-align: right;"> DISCOUNT: {{ $item->discount }}%</h4>
-			        		@endif
+			        		<h3 style="color: #1a1a1a;">{{$item-> brand -> brandname}}</h3>
+                  <h3 style="color: #333333;"> <?php echo $item->description; ?> </h3>
+                  <hr>
+                            
+                  <br>
+                  <h4 style="color: #4d4d4d;"><?php echo $item->note; ?></h4>
+			        		
 			        	</div>
 			        </div>
 			        

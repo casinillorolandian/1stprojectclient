@@ -27,7 +27,7 @@
         
         <!-- /.col-lg-3 -->
 
-        <div class="col-lg-12" style="position:relative; top: -60px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="position:relative; top: -60px;">
 
           <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -35,19 +35,63 @@
               <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+
             </ol>
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
-                <img class="d-block img-fluid" src="{{ asset('img/fall.jpeg') }}" alt="First slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1a.jpg') }}" alt="First slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <a href='{{url("watches")}}'> 
+                  <div class="imageration lobofont">Watches/Jewelries</div>
+                  </a>
+                </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="{{ asset('img/winter.jpg') }}" alt="Second slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1b.jpeg') }}" alt="Second slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Accessories"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Accessories</div>
+                  </a>
+                </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="{{ asset('img/spring.jpg') }}" alt="Third slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1c.jpeg') }}" alt="Third slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Bags"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Bags</div>
+                  </a>
+                </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="{{ asset('img/summer.jpeg') }}" alt="Third slide">
+                <img class="d-block img-fluid" src="{{ asset('/css/1e.jpeg') }}" alt="Fourth slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Luggages"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Luggages</div>
+                  </a>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="d-block img-fluid" src="{{ asset('/css/1d.jpeg') }}" alt="Fourth slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Footwears"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Footwears</div>
+                  </a>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="d-block img-fluid" src="{{ asset('/css/1f.jpg') }}" alt="Fourth slide" style="height: 250px; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                  <?php $category="Wallets"; ?>
+                  <a href='{{url("category/$category")}}'>  
+                  <div class="imageration lobofont">Wallets</div>
+                  </a>
+                </div>
               </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -60,22 +104,109 @@
             </a>
           </div>
         </div>
+
+        <div class="col col-lg-12" style="position:relative; top: -82px;">
+
+            <style scoped>
+                  .perboxcenter {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    padding: 5px;
+                    background-color: white;
+                    box-shadow: 0 4px 6px 0 hsla(0,0%,0%, 0.2);
+                  }
+
+                  .imageneration { opacity: 0.6; transition: 0.3s;}
+
+                  .imageneration:hover {opacity: 1}
+
+                  .lobofont {
+                    font-family: 'Merriweather', serif;
+                    font-family: 'Cinzel Decorative', cursive;
+                    font-family: 'Expletus Sans', cursive;
+                    font-size: 2em;
+                    text-align: center;
+                    color: #373737;
+                  }
+
+            </style>
+                                      
+                                        <div class="row">
+                                        
+                                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6" style="padding: 0; margin: 0;">
+                                            <div style="background-image: url('{{url('/css/whitepattern.jpeg')}}'); height: 100px; position: relative; opacity: 0.6">
+        
+                                                <div class="perboxcenter lobofont">Brands</div>
+                                              
+                                            </div>
+                                          </div>
+
+                                          @foreach($all_brands as $all_brand)
+                                            @if($all_brand->brandimage != '0')
+                                              <?php $nameofBrand= $all_brand->brandname ?>
+                                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6" style="padding: 0; margin: 0;">
+                                                <a href='{{url("category/$mycategories/brand/$nameofBrand")}}'>
+                                                  <div class="imageneration" style="background-image: url('/{{ $all_brand-> brandimage }}'); height: 100px; position: relative;">
+                                                    
+                                                      <div class="perboxcenter lobofont">{{ $all_brand-> brandname }}</div>
+                                                    
+                                                  </div>
+                                                </a>
+                                              </div>
+                                            @else
+                                              <?php $nameofBrand= $all_brand->brandname ?>
+                                              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6" style="padding: 0; margin: 0;">
+                                                <a href='{{url("category/$mycategories/brand/$nameofBrand")}}'>
+                                                  <div class="imageneration" style="background-image: url('{{url('/css/whitepattern.jpeg')}}'); height: 100px; position: relative;">
+                                                    
+                                                      <div class="perboxcenter lobofont">{{ $all_brand-> brandname }}</div>
+                                                    
+                                                  </div>
+                                                </a>
+                                              </div>
+                                            @endif
+                                          @endforeach
+                                        </div>
+                                          
+                                        
+                                        
+                                      
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        
         <div class="col-lg-10 offset-md-1">
-          <h3> 
-              @if(count($mycategories) <= 2)
-              CATEGORY:
-              @elseif(count($mycategories) > 2)
-              CATEGORIES:
+          <h3>
+              @if(is_array($mycategories))
+                @if(count($mycategories) <= 2)
+                CATEGORY:
+                @elseif(count($mycategories) > 2)
+                CATEGORIES:
+                @endif
+
+                @foreach($mycategories as $key => $value)
+                @if($key == 1)
+                 {{$value}}
+                @elseif($key > 1)
+                 , {{$value}}
+                @endif
+                @endforeach
+                .
+              @else
+                CATEGORY: {{$mycategories}}
               @endif
 
-              @foreach($mycategories as $key => $value)
-              @if($key == 1)
-               {{$value}}
-              @elseif($key > 1)
-               , {{$value}}
-              @endif
-              @endforeach
-              .
           </h3>
           <hr>
 
@@ -83,20 +214,22 @@
             @foreach($all_items as $item)
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a data-toggle="modal" data-target="#myModal{{$item->id}}"><img style="height: 350px;" class="card-img-top" src="{{ $item-> itemimage1 }}" alt=""></a>
+                <a data-toggle="modal" data-target="#myModal{{$item->id}}"><img style="height: 350px;" class="card-img-top" src="/{{ $item-> itemimage1 }}" alt="">
                 <div class="card-body" style="height: 60px;"> 
                   <h4 class="card-title">
-                    <a href="#">{{ $item-> itemname }}</a>
+                    {{ $item-> name }}
+                    
                   </h4>
                 </div>
+                </a>
                 <div class="card-footer">
                   <small class="text-muted"><?php echo $item->category; ?></small>
                 </div>
-                @if (Auth::user()->role == NULL)
-                @elseif (Auth::user()->role == 'admin')
+                @guest
+                @elseif (Auth::guard('admin')->check())
                 <a data-toggle="modal" data-target="#deleteModal{{$item->id}}" class="btn btn-danger btn-md" role="button">Delete</a>
                 <a href='{{url("catalogue/update/$item->id/")}}' class="btn btn-info btn-md" role="button">Update</a>
-                @endif
+                @endguest
               </div>
             </div>
 
@@ -108,41 +241,37 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                    @if (Auth::user()->role == NULL)
+                    @guest
                     @elseif (Auth::user()->role == 'user')
                     <a href='{{url("messages/reserve/$item->id/")}}' class="btn btn-info btn-md" role="button">Reserve</a>
                     @else
                     <a href='{{url("catalogue/update/$item->id/")}}' class="btn btn-info btn-md" role="button">Update</a>
-                    @endif
+                    @endguest
                       
                     </div>
                     <div class="modal-body row">
                         <div class="col-lg-4 ">
-                            <img style="height: 350px;" src="{{ $item-> itemimage1 }}" alt="">
+                            <img style="height: 350px;width: 350px;" src="/{{ $item-> itemimage1 }}" alt="">
 
                             @if($item-> itemimage2 != '0')
                             <br>
-                            <img style="height: 350px;" src="{{ $item-> itemimage2 }}" alt="">
+                            <img style="height: 350px;width: 350px;" src="/{{ $item-> itemimage2 }}" alt="">
                             @endif
 
                             @if($item-> itemimage3 != '0')
                             <br>
-                            <img style="height: 350px;" src="{{ $item-> itemimage3 }}" alt="">
+                            <img style="height: 350px;width: 350px;" src="/{{ $item-> itemimage3 }}" alt="">
                             @endif
                         </div>
                         <div class="col-lg-7 offset-lg-1">
-                            <h1>{{ $item->itemname }}</h1>
+                            <h2>For as low as: &#8369;{{ $item->price }}</h1>
                             <hr>
-                            <h3>{{ $item->category }}</h3>
+                            <h3 style="color: #1a1a1a;">{{$item-> brand -> brandname}}</h3>
+                            <h3 style="color: #333333;"> <?php echo $item->description; ?> </h3>
                             <hr>
-                            <h4>{{ $item->itemname }}</h4>
-                            <hr>
-                            <?php echo $item->itemdescription; ?>
-                            <hr>
-                            @if($item-> discount != '0')
+                                      
                             <br>
-                            <h4 style="text-align: right;"> DISCOUNT: {{ $item->discount }}%</h4>
-                            @endif
+                            <h4 style="color: #4d4d4d;"><?php echo $item->note; ?></h4>
                         </div>
                     </div>
                     

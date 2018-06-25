@@ -15,16 +15,21 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('itemname');
-            $table->text('itemdescription');
             $table->text('category');
+            $table->integer('brand_id')->unsigned();
+            $table->text('name');
             $table->string('itemimage1')->unique();
-            $table->string('itemimage2')->;
-            $table->string('itemimage3')->;
-            $table->integer('reserve_id')->unsigned();
-            $table->integer('itemlevel');
-            $table->integer('discount');
+            $table->string('itemimage2');
+            $table->string('itemimage3');
+            $table->text('description');
+            $table->text('note');
+            $table->integer('price');
+            $table->integer('barcode');
             $table->timestamps();
+
+            $table->foreign('brand_id')
+                ->references('id')->on('brands')
+                ->onDelete('cascade');
         });
     }
 

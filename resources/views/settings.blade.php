@@ -1,7 +1,7 @@
-@extends('messages.messaginglayout')
-@extends('layouts.app')
+@extends('layouts.adminsettinglayout')
+@extends('layouts.adminapp')
 
-@section('main_content')
+@section('homecontent')
 <div>
 
 	<br>

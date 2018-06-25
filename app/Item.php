@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-    // function users(){
-    // 	return $this->belongsto('App\User');
-    // }
+    function brand(){
+    	return $this->belongsto('App\Brand');
+    }
+
+    
 }

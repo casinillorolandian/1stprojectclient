@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ 'W.E.M.' }}</title>
+    <title>{{ 'BAGAHOLIC' }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -29,7 +29,7 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel" style="z-index: 5;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    {{ 'W.E.M.' }}
+                    {{ 'BAGAHOLIC' }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -55,23 +55,23 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                        @else
-                            
-                            <li>  
-                             <img src="/{{ Auth::user()->image }}" style="width:40px; height:40px; border-radius: 50%; margin-right:25px;"> <span style="color: rgba(0,0,0,.5); font-size: 1.0em; position: relative; top: 2px; right: 10px;">  {{ Auth::user()->name }} </span>
-                            </li>
-
-                            @if (Auth::user()->role == 'user')
                             <li>
                                 <a id="" class="nav-link" href="/catalogue" aria-haspopup="true" aria-expanded="false">
                                     {{ __('Catalogue') }}
                                 </a>
                             </li>
-                            @endif
+                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                <!-- ------------------------------------------------------------ -->
+                        @elseif (Auth::guard('admin')->check())
 
-                            @if (Auth::user()->role == 'admin')
+                            <li>  
+                             <img src="/{{ Auth::user()->image }}" style="width:40px; height:40px; border-radius: 50%; margin-right:25px;"> <span style="color: rgba(0,0,0,.5); font-size: 1.0em; position: relative; top: 2px; right: 10px;">  {{ Auth::user()->name }} </span>
+                            </li>
+
+                            
+
+                            
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ __('Catalogue') }} <span class="caret"></span>
@@ -92,16 +92,94 @@
                                     
                                 </div>
                             </li>
-                            @endif
+                            
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ __('Messages') }}
                                     <span style="color:darkred; font-weight:bold;">
-                                    @if(Auth::user()->role == 'admin')
-                                    ( {{App\Message::where('seen','==','0')->count()}} )
+                                    
+                                    
                                     <i class="fa fa-envelope-o"></i>
-                                    @elseif(Auth::user()->role == 'user')
+                                    </span>
+
+
+                                    <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/messages">
+                                        {{ __('Message') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="/messages/create">
+                                        Create Message
+                                    </a>
+                                    
+                                    <a class="dropdown-item" href="/messages/show/deletedmessages">
+                                        Deleted Messages
+                                    </a>
+                                    <a class="dropdown-item" href="/messages/show/spammedmessages">
+                                        Spammed Messages
+                                    </a>
+                                    
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                     Settings <i class="fa fa-cog"></i><span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/home">
+                                        Home
+                                    </a>
+                                    
+                                    <a class="dropdown-item" href="{{ url('/settings') }}"> View Users</a>
+                                    
+                                    
+
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                            
+                                </div>
+
+
+                                
+
+                            </li>
+
+            <!-- -------------------------------------------------------------- -->
+                        @else
+                            
+                            <li>  
+                             <img src="/{{ Auth::user()->image }}" style="width:40px; height:40px; border-radius: 50%; margin-right:25px;"> <span style="color: rgba(0,0,0,.5); font-size: 1.0em; position: relative; top: 2px; right: 10px;">  {{ Auth::user()->name }} </span>
+                            </li>
+
+                            @if (Auth::user()->role == 'user')
+                            <li>
+                                <a id="" class="nav-link" href="/catalogue" aria-haspopup="true" aria-expanded="false">
+                                    {{ __('Catalogue') }}
+                                </a>
+                            </li>
+                            @endif
+
+                        
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('Messages') }}
+                                    <span style="color:darkred; font-weight:bold;">
+                                    
+                                    @if(Auth::user()->role == 'user')
                                     @php
                                     $counter = 0;
                                     $user_messages = App\Message::where('user_id',Auth::user()->id)->get();
@@ -135,14 +213,6 @@
                                     <a class="dropdown-item" href="/messages/create">
                                         Create Message
                                     </a>
-                                    @if (Auth::user()->role == 'admin')
-                                    <a class="dropdown-item" href="/messages/show/deletedmessages">
-                                        Deleted Messages
-                                    </a>
-                                    <a class="dropdown-item" href="/messages/show/spammedmessages">
-                                        Spammed Messages
-                                    </a>
-                                    @endif
                                 </div>
                             </li>
 
@@ -160,12 +230,6 @@
                                     <a class="dropdown-item" href="/changePassword">
                                         Change <br> Password
                                     </a>
-                                    @endif
-
-                                    @if (Auth::user()->role == 'admin')
-                                    
-                                        <a class="dropdown-item" href="{{ url('/settings') }}"> View Users</a>
-                                    
                                     @endif
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"

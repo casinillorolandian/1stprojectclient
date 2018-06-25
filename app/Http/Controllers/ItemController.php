@@ -5,32 +5,165 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use App\Item;
 
 class ItemController extends Controller
 {
     function showItems(Request $request){
       // $all_items = \App\Item::all();
       // $all_items= \App\Item::orderby('created_at','desc')->limit('3')->get();
-      $all_items= \App\Item::orderby('created_at')->where('reserve_id', '0')->paginate(12);
+
+
+      $all_items= \App\Item::orderby('created_at')->paginate(12);
+
+      // will implement the reserve item
+      // $all_items= \App\Item::orderby('created_at')->where('reserve_id', '0')->paginate(12);
       return view('inventory.items', compact('all_items'));
     }
 
 
     function create(){
-   		return view('inventory.items_create');
+
+      $brandselects = \App\Brand::all();
+     
+      $barcode = \App\Item::orderby('created_at','desc')->value('barcode');
+      $justNo = substr($barcode, 11);
+      $justNo += 1;
+      $latestbarcode = "BAGAHOLIC00" . $justNo;
+
+      // dd($latestbarcode);
+
+   		return view('inventory.items_create', compact('brandselects', 'latestbarcode'));
     }
 
+
+    function updatebrand($id){
+
+      $brandselect =\App\Brand::find($id);
+      return view('inventory.updatebrand', compact('brandselect'));
+    }
+
+    function updatebranddata(Request $request){
+      $brandid= $request->post('brandid');
+      $updatebrand= $request->post('updatebrand');
+      $updatebrandimage= $request->file('updatebrandimage');
+
+      if($updatebrandimage != null){
+        $filebrand = $updatebrandimage;
+        $namefilebrand = $filebrand->getClientOriginalName();
+        $finalfilenamebrand = $updatebrand . time() . $namefilebrand ;
+        $destinationPath = 'uploads/brandimage';
+        $filebrand->move($destinationPath,$finalfilenamebrand);
+
+
+        $imageNamebrand = $updatebrandimage->getClientOriginalName();
+        $imagedatabrand = 'uploads/brandimage/'. $updatebrand . time() .  $imageNamebrand ;
+        } else {
+          $imagedatabrand = '0';
+        }
+
+      $brand_obj = \App\Brand::find($brandid);
+      $brand_obj ->brandname = $updatebrand;
+      $brand_obj ->brandimage = $imagedatabrand;
+      $brand_obj ->save();
+
+      return redirect("/catalogue/create");
+
+
+      
+    }
+
+
+    function addbrand(Request $request){
+      $addbrand= $request->post('addbrand');
+      $brandimage= $request->file('brandimage');
+
+
+      if($brandimage != null){
+        $filebrand = $brandimage;
+        $namefilebrand = $filebrand->getClientOriginalName();
+        $finalfilenamebrand = $addbrand . time() . $namefilebrand ;
+        $destinationPath = 'uploads/brandimage';
+        $filebrand->move($destinationPath,$finalfilenamebrand);
+
+
+        $imageNamebrand = $brandimage->getClientOriginalName();
+        $imagedatabrand = 'uploads/brandimage/'. $addbrand . time() .  $imageNamebrand ;
+        } else {
+          $imagedatabrand = '0';
+        }
+
+
+      $brand_obj = new \App\Brand();
+      $brand_obj ->brandname = $addbrand;
+      $brand_obj ->brandimage = $imagedatabrand;
+      $brand_obj ->save();
+
+      return redirect("/catalogue/create");
+    }
+
+
     function store(Request $request){
-        $name= $request->post('name');
+        
         $category= $request->post('category');
-        $itemdescription= $request->post('itemdescription');
-        $discount= $request->post('discount');
+        $brand= $request->post('brand');
+        $description= $request->post('description');
+        $note= $request->post('note');
         $firstimage= $request->file('1stimage');
         $secondimage= $request->file('2ndimage');
         $thirdimage= $request->file('3rdimage');
-        $itemlevel= '0';
-        $reserve_id= '0';
+        $price= $request->post('price');
+        $barcode= $request->post('barcode');
+
+        $brandname = \App\Brand::where('id', $brand)->value('brandname');
+        
+        $name = $brandname . time();
+
+        
+        // dd($category,$brand,$description,$note,$firstimage,$secondimage,$thirdimage,$price,$barcode,$name);
+
+        //for future
+        // $itemlevel= '0';
+        // $reserve_id= '0';
          
+
+        if($brand > 0){
+          $brandid = $brand;
+        } else {
+
+          $brandname = \App\Brand::where('brandname', '=', $brand)->get();
+          $brandname = array_pluck($brandname,'id');
+
+
+            if (intval($brandname) > 0) {
+              $brandid = intval($brandname);
+            } else {
+              $registerbrand = $brand;
+
+              $brand_obj = new \App\Brand();
+              $brand_obj ->brandname = $registerbrand;
+              $brand_obj ->save();
+
+              $brandid = \App\Brand::where('brandname', $registerbrand)->get();
+
+              $brandid = intval(array_pluck($brandid,'id'));
+
+            }
+
+            // intval($brandname) > 0 ? $brandid = $brandname : $registerbrand = $brand;
+
+            // if($registerbrand != NULL){
+            //   $brand_obj = new \App\Brand();
+            //   $brand_obj ->brandname = $registerbrand;
+            //   $brand_obj ->save();
+
+            //   $brandid = \App\Brand::where('brandname', $registerbrand)->find($id);
+
+            // } else {}
+
+
+        }
+
 
         // 1st IMAGE going to the folder
         $file1 = $firstimage;
@@ -41,7 +174,9 @@ class ItemController extends Controller
 
         // 1stimage going to the database
         $imageName1 = $firstimage->getClientOriginalName();
-        $imagedata1 = 'uploads/item/'. time(). '1stitem' .$imageName1 ;
+        $imagedata1 = 'uploads/item/'. time(). '1stitem' . $imageName1 ;
+
+        
 
         // 2nd IMAGE 
         if($secondimage != null){
@@ -75,36 +210,38 @@ class ItemController extends Controller
 
 
         $rules = array(
-          'name' => 'required | min:3 | max:191 | regex:/^[A-Za-z0-9\-\s ]+$/' ,
           'category' => 'required | not_in:0', 
-          'itemdescription' => 'required',
-          'discount' => 'required | max:2', 
+          'description' => 'required',
+          'note' => 'required',
+          'barcode' => 'required | min:8 | max:50', 
           '1stimage' => '',
           '2ndimage' => '',
           '3rdimage' => '', 
         );
 
+        
+
+
       $this -> validate($request,$rules);
 
       $item_obj = new \App\Item();
-      $item_obj ->itemname = $name;
-      $item_obj ->itemdescription = $itemdescription;
       $item_obj ->category = $category;
+      $item_obj ->brand_id = $brandid;
+      $item_obj ->name = $name;
       $item_obj ->itemimage1 = $imagedata1;
       $item_obj ->itemimage2 = $imagedata2;
       $item_obj ->itemimage3 = $imagedata3;
-      $item_obj ->reserve_id = $reserve_id;
-      $item_obj ->itemlevel = $itemlevel;
-      $item_obj ->discount = $discount;
+      $item_obj ->description = $description;
+      $item_obj ->note = $note;
+      $item_obj ->price = $price;
+      $item_obj ->barcode = $barcode;
       $item_obj ->save();
 
       
+      return redirect("catalogue/create");
+      }
 
-      // dd($request);
-
-      return redirect("catalogue");
       
-    }
 
     function delete($id){
 
@@ -118,20 +255,33 @@ class ItemController extends Controller
 
     function update($id){
 
+      $brandid = \App\Item::where('id', $id)->value('brand_id');
+      $brandname = \App\Brand::find($brandid);
+      
+      
+      $brandselects = \App\Brand::all();
       $all_items =\App\Item::find($id);
-      return view('inventory.updateitem', compact('all_items'));
+      return view('inventory.updateitem', compact('all_items', 'brandselects', 'brandname'));
     }
 
     function updatedata(Request $request, $id){
-        $name= $request->post('name');
+
         $category= $request->post('category');
-        $itemdescription= $request->post('itemdescription');
-        $discount= $request->post('discount');
+        $brandid= $request->post('brand');
+        $description= $request->post('itemdescription');
+        $note= $request->post('note');
         $firstimage= $request->file('1stimage');
         $secondimage= $request->file('2ndimage');
         $thirdimage= $request->file('3rdimage');
-        $itemlevel= '0';
-        $reserve_id= '0';
+        $price= $request->post('price');
+        $barcode= $request->post('barcode');
+
+        $brandname = \App\Brand::where('id', $brandid)->value('brandname');
+        
+        $name = $brandname . time();
+
+        
+        // dd($category, $brand, $description, $note, $firstimage, $secondimage, $thirdimage, $price, $barcode, $name);
          
         $item_obj = \App\Item::find($id);
         // 1st IMAGE going to the folder
@@ -179,10 +329,9 @@ class ItemController extends Controller
 
 
         $rules = array(
-          'name' => 'required | min:3 | max:191 | regex:/^[A-Za-z0-9\-\s ]+$/',
           'category' => 'required | not_in:0', 
           'itemdescription' => 'required',
-          'discount' => 'required | max:2', 
+          'note' => 'required',
           '1stimage' => '',
           '2ndimage' => '',
           '3rdimage' => '', 
@@ -191,13 +340,14 @@ class ItemController extends Controller
       $this -> validate($request,$rules);
 
       
-      $item_obj ->itemname = $name;
-      $item_obj ->itemdescription = $itemdescription;
       $item_obj ->category = $category;
+      $item_obj ->brand_id = $brandid;
+      $item_obj ->name = $name;
 
-      $item_obj ->reserve_id = $reserve_id;
-      $item_obj ->itemlevel = $itemlevel;
-      $item_obj ->discount = $discount;
+      $item_obj ->description = $description;
+      $item_obj ->note = $note;
+      $item_obj ->price = $price;
+      $item_obj ->barcode = $barcode;
       $item_obj ->save();
 
       
@@ -268,9 +418,21 @@ class ItemController extends Controller
      // // // dd($all_items);
      // //  // $request->session()->put('category',$category);
 
+      $brandNo= \App\Item::whereIn('category', $mycategories)->distinct('brand_id')->pluck('brand_id');
+
+        $countbrand= count($brandNo);
+      
+        $all_brands= \App\Brand::whereIn('id', $brandNo)
+                    ->orderby('brandname')
+                    ->get();
+
+        $choosencategories= $mycategories;
+        $mycategories= http_build_query($mycategories);
+
+        // dd($choosencategories);
 
       
-      return view('inventory.item_category', compact('all_items', 'mycategories'));
+      return view('inventory.item_sidenavcategory', compact('all_items', 'mycategories','choosencategories', 'all_brands'));
     }
 
 
@@ -302,8 +464,35 @@ class ItemController extends Controller
 
     // Search
       public function search(Request $request) {
+
         $keyword = $request->input('search');
-        $all_items = \App\Item::where('itemname', 'LIKE', '%'.$keyword.'%')->orWhere('itemdescription', 'LIKE', '%'.$keyword.'%')->paginate(12);
+
+        
+
+
+        $all_items = Item::where('category', 'LIKE', '%'.$keyword.'%')
+          // ->orWhere('brand_id', function ($brand) use ($keyword) {
+          //   $brand->where('brandname', 'LIKE', '%'.$keyword.'%');
+          // })
+            ->orWhere('name', 'LIKE', '%'.$keyword.'%')
+            ->orWhere('description', 'LIKE', '%'.$keyword.'%')
+            ->orWhere('note', 'LIKE', '%'.$keyword.'%')
+          ->with('brand')
+          ->paginate(12);
+
+
+
+    //copy       $movies = Movie::whereHas('season', function ($season) use ($season_number) {
+              //     $season->where('number', $season_number);
+              // })
+              // ->whereHas('season.category', function ($category) use ($category_slug) {
+              //     $category->where('slug', $category_slug);
+              // })
+              // ->with('season')
+              // ->get();
+
+
+
         return view('inventory.searchitem', compact('all_items', 'keyword'));
       }
 
@@ -335,6 +524,121 @@ class ItemController extends Controller
 
 
       return back();
+    }
+
+    function linkcategorylist($category){
+      // dd($request->category);
+      //$category = $request-> get('category');
+      $mycategories = $category;
+
+        $brandNo= \App\Item::where('category', $mycategories)->distinct('brand_id')->pluck('brand_id');
+
+        $countbrand= count($brandNo);
+      
+        $all_brands= \App\Brand::whereIn('id', $brandNo)
+                    ->orderby('brandname')
+                    ->get();
+      
+        $all_items = \App\Item::where('category', $mycategories)->paginate(12);
+
+        
+
+        
+      
+
+        
+
+
+      
+      return view('inventory.item_category', compact('all_items', 'mycategories', 'category', 'all_brands'));
+    }
+
+    function linkcategorybrandlist($mycategories, $nameofBrand){
+
+
+      
+        if(strrchr($mycategories, '0')){
+          $mycategories = parse_str($mycategories,$output);
+          $brandNo = \App\Brand::where('brandname', '=', $nameofBrand)->get()->pluck('id');
+
+              if(count($output) == 1){
+                $brandListName = \App\Item::select('*')->distinct('brand_id')->pluck('brand_id');;
+              } elseif(count($output) >= 2) {
+                $brandListName = \App\Item::whereIn('category', $output)
+                                          ->distinct('brand_id')
+                                          ->pluck('brand_id');
+              } 
+
+              $all_brands= \App\Brand::whereIn('id', $brandListName)
+                      ->orderby('brandname')
+                      ->get();
+
+              
+              if(count($output) == 1){
+                $all_items = \App\Item::where('brand_id', $brandNo)->paginate(12);
+              } else {
+                $all_items = \App\Item::where('brand_id', $brandNo)
+                                  ->whereIn('category', $output)
+                                  ->paginate(12);
+              } 
+
+              $choosencategories = $output;
+              $mycategories = http_build_query($output);
+
+
+              return view('inventory.item_brand', compact('all_items', 'choosencategories', 'mycategories', 'nameofBrand', 'all_brands'));
+
+              // STUDY THIS sub-query!!!
+              // The error is "No tables used (SQL: select * from `items` where (`category` = (select * where `category` = 0 or `category` = Luggages or `category` = Footwears) and `brand_id` = 1))"
+
+              // $all_items = \App\Item::where([['category', function($query) use ($output) {
+              //                 for($i=0;$i<count($output); $i++){
+              //                   if(count($output) == 0){
+              //                       $query->select('*');
+              //                   }else{
+              //                       $query->orWhere('category',$output[$i]);
+              //                   }
+              //                 }
+              //               }]
+              //             ,['brand_id', $brandNo]])->get();
+
+
+                          
+
+                          // \App\Item::where(['brand_id', $brandNo])
+                          //   ->orWhereIn('category', function($query) use ($output) {
+                          //     for($i=0;$i<count($output); $i++){
+                          //       if($i==0){
+                          //           $query->select('*');
+                          //       }else{
+                          //           $query->orWhere('category',$output[$i]);
+                          //       }
+                          //     }
+                          //   })
+                          //   ->get();
+
+
+        } else {
+
+          $brandNo = \App\Brand::where('brandname', '=', $nameofBrand)->get()->pluck('id');
+          $brandListName = \App\Item::where('category', '=', $mycategories)->distinct('brand_id')->pluck('brand_id');
+          
+        
+          $all_brands= \App\Brand::whereIn('id', $brandListName)
+                      ->orderby('brandname')
+                      ->get();
+        
+          $all_items = \App\Item::where([['category', $mycategories],['brand_id', $brandNo]])->paginate(12);
+          $choosencategories = '0';
+
+          return view('inventory.item_brand', compact('all_items', 'mycategories', 'choosencategories', 'nameofBrand', 'all_brands'));
+
+        }
+
+
+
+      
+      
     }
 
 

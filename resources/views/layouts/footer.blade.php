@@ -246,7 +246,7 @@ html.modal-active, body.modal-active {
 }
 
 .content {
-  height: 300px;
+  height: 200px;
   
   background: white;
   position: relative;
@@ -597,122 +597,7 @@ html.modal-active, body.modal-active {
 </head>
 
 <body>
-<div class="">
-  <div id="modal-container" style=" z-index: 99">
-    <div class="modal-background row">
-      <div class="modal col-md-10">
 
-              <div>
-
-                <div class="row">
-                
-                <div class="map col-md-3" style="background: white; position: relative; top: -20px;">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.8684890719574!2d121.02169231441623!3d14.549512182228277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c91a5b680457%3A0x1c14b68e860b0cba!2sBagaholic!5e0!3m2!1sen!2sph!4v1518751403724" width="150px" height="150px" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
-
-                <div class="col-md-9">
-                <h5 style="text-align: left;">Bagaholic– </h5>
-                <h6 style="text-align: left;">Address: 99nd Floor 999 Almeda Arcade Bldg., Arnaiz Ave., Makati City<br>
-                Operating Hours: 10:00A.M. – 8:00P.M. (Monday to Sunday)<br>
-                Telephone Numbers: (+632) 000-000 / (+632) 000-0000<br>
-                Mobile Number: +63917-000-0000<br>
-                Email Address: gabaholic@yahoo.com</h6>
-                </div>
-
-                <div class="col-md-12" style="width: 100%; height: 10px"> </div>
-                <div class="col-md-12" style="width: 100%; height: 25px; border-top:1px solid black;"> </div>
-
-                <div class="col-md-8 offset-md-1">
-                <h5 style="text-align: left;">Watch E Metro Main – </h5>
-                <h6 style="text-align: left;">Address: Ground Floor Greenbelt 9, Paseo de Roxas Cor. Legaspi St., Makati City<br>
-                Operating Hours: 10:00A.M. – 8:00P.M. (Monday to Sunday)<br>
-                Telephone Numbers: (+632) 000-000 / (+632) 000-0000<br>
-                Mobile Number: +63917-000-0000<br>
-                Email Address: WEM@yahoo.com</h6>
-                </div>
-
-                <div class="map col-md-3" style="background: white;">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.8022375630803!2d121.018792414336!3d14.553298889832586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c90fe3d93cd5%3A0xec0ae9e80a5bd0e0!2sManila+Watch+Emporium!5e0!3m2!1sen!2sph!4v1518765063898" width="150px" height="150px" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
-
-                
-                <div class="col-md-12" style="width: 100%; height: 10px"> </div>
-                <div class="col-md-12" style="width: 100%; height: 25px; border-top:1px solid black;"> </div>
-
-                <div class="map col-md-3" style=" background: white;">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.9415063770175!2d121.04761981433663!3d14.60240798980128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b7d8c4afe7d3%3A0xc2e1ea06e5323ca!2sV-Mall!5e0!3m2!1sen!2sph!4v1518765774562" width="150px" height="150px" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
-
-                <div class="col-md-9">
-                <h5 style="text-align: left;">Watch E Metro (Vmall Branch) - </h5>
-                <h6 style="text-align: left;">Address: 2nd Floor Vmall (near bridge way to parking), Greenhills Shopping Center, San Juan<br>
-                Operating Hours: 10:00A.M. – 8:00P.M. (Monday to Sunday)<br>
-                Telephone Numbers: (+632) 000-000 / (+632) 000-0000<br>
-                Mobile Number: +63917-000-0000<br>
-                Email Address: WEM@yahoo.com</h6>
-                
-                </div>
-
-                </div> <!-- for row -->
-              </div>
-      
-      <svg class="modal-svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
-								<rect x="0" y="0" fill="none" width="226" height="162" rx="3" ry="3"></rect>
-							</svg>
-    </div>
-  </div>
-</div>
-
-
-<div class="container-fluid">
-  <div class="row" style="padding: 0 0 10px 0;">
-    <div class="col" >
-      <div class="content">
-        <h1 style="text-align: center">Visit Us</h1>
-        <div class="buttons float-left">
-          <div id="one" class="button gabaholic">GABAHOLIC</div>
-          <div id="two" class="button wem">WEM</div>
-          <div id="five" class="button vmall">V-MALL</div>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="content">
-        <h1 style="text-align: center">Social Media</h1>
-        <div class="footer-icons">
-          <div class="row">
-          <div class="col col-md-1 col offset-md-2">
-          <a href="https://www.facebook.com/" class="gi-3x"><i class="fa fa-facebook-square"></i></a>
-          </div>
-          <div class="col col-md-1 offset-md-1">
-          <a href="https://twitter.com/?lang=en" class="gi-3x"><i class="fa fa-twitter"></i></a>
-          </div>
-          <div class="col col-md-1 offset-md-1">
-          <a href="https://www.tumblr.com/login" class="gi-3x"><i class="fa fa-tumblr-square"></i></a>
-          </div>
-          <div class="col col-md-1 offset-md-1">
-          <a href="https://www.instagram.com/accounts/login/" class="gi-3x"><i class="fa fa-instagram "></i></a>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="content">
-
-        <h5 style="text-align: center; margin-top: 40%;"> &copy; COPYRIGHTS RICC. ALL RIGHTS RESERVED.</h5>
-      </div>
-    </div>
-    </div>
-</div>
-
-
-
-<div style="background-image: url(http://theartmad.com/wp-content/uploads/Dark-Grey-Texture-Wallpaper-5.jpg); height: 200px; z-index: -10">
-
-    
-</div>
-</div>
 
   <!-- Bootsrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

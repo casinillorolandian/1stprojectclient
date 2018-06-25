@@ -27,8 +27,8 @@ class AdminController extends Controller
     public function index()
     {
         $current_user = Auth::user();
-        $all_items= \App\Item::orderby('created_at')->where('reserve_id', '>' ,'0')->paginate(12);
-        return view('admin', compact('current_user','all_items'));
+        // $all_items= \App\Item::orderby('created_at')->where('reserve_id', '>' ,'0')->paginate(12);
+        return view('admin', compact('current_user'));
     }
 
     function profile(){
@@ -37,17 +37,17 @@ class AdminController extends Controller
         return view('profile', array('user'=>Auth::user()));
     }
 
-    function update_avatar(Request $request){
+    function update_adminavatar(Request $request){
         //handle the user upload of avatar
         if ($request->hasFile('image')){
             $file = $request -> file('image');
             $namefile = $file->getClientOriginalName();
             $finalfilename = time() . $namefile;
-            $destinationPath = 'uploads';
+            $destinationPath = 'uploads/avatarAdmin';
             $file->move($destinationPath,$finalfilename);
 
             $imageName = $namefile;
-            $imagedata = 'uploads/'. time() .$imageName;    
+            $imagedata = 'uploads/avatarAdmin/'. time() .$imageName;    
 
             $current_user = Auth::user();
             $current_user->image = $imagedata;

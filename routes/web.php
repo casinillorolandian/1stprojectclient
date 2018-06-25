@@ -26,9 +26,27 @@ Route::prefix('admin')->group(function(){
 	Route::get('/', 'AdminController@index')->name('admin.dashboard');
 });
 
+// Edit to be seen by guest from here
+Route::get('/catalogue','ItemController@showItems');
+
+//category
+Route::post('/catalogue', 'ItemController@categorylist');
+
+
+
+//category from link
+Route::get('/category/{category}', 'ItemController@linkcategorylist');
+
+//category and brand
+Route::get('/category/{mycategories}/brand/{nameofBrand}', 'ItemController@linkcategorybrandlist');
+
+// Search
+Route::post('/searchitems','ItemController@search');
+// ends here
+
 
 // Only the login can only view
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth', 'middleware' => 'is.admin'], function() {
 
 
 // messaging routes
@@ -59,15 +77,7 @@ Route::get('/changePassword','HomeController@showChangePasswordForm');
 
 Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 
-// Edit to be seen by guest from here
-Route::get('/catalogue','ItemController@showItems');
 
-//category
-Route::post('/catalogue', 'ItemController@categorylist');
-
-// Search
-Route::post('/searchitems','ItemController@search');
-// ends here
 
 });
 
@@ -80,6 +90,14 @@ Route::get('/settings','MessagesController@showUsers');
 Route::get('/catalogue/create', 'ItemController@create');
 
 Route::post('/catalogue/create', 'ItemController@store');
+
+Route::post('/newbrand', 'ItemController@addbrand');
+
+Route::post('/updatebrand', 'ItemController@updatebrand');
+
+Route::get('/updatebrand/{id}', 'ItemController@updatebrand');
+Route::post('/updatebrand/{id}', 'ItemController@updatebranddata');
+
 
 Route::get('catalogue/{id}/delete', 'ItemController@delete');
 
@@ -103,6 +121,11 @@ Route::get('/messages/show/deletedmessages','MessagesController@showDeletedMessa
 Route::get('messages/{id}/spam', 'MessagesController@spam');
 
 Route::get('/messages/show/spammedmessages','MessagesController@showSpammedMessages');
+
+//Profile
+Route::get('/adminprofile', 'AdminController@profile');
+
+Route::post('/adminprofile', 'AdminController@update_adminavatar');
 });
 
 

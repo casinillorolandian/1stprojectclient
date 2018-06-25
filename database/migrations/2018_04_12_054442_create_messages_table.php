@@ -20,14 +20,18 @@ class CreateMessagesTable extends Migration
             $table->text('messageabout');
             $table->text('actualmessage');
             $table->string('1stimage')->unique();
-            $table->string('2ndimage')->;
-            $table->string('3rdimage')->;
+            $table->string('2ndimage');
+            $table->string('3rdimage');
             $table->integer('sendto_id')->unsigned();
             $table->timestamps();
 
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('sendto_id')
+                ->references('id')->on('admins')
                 ->onDelete('cascade');
         });
     }
